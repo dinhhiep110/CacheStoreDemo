@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController()
@@ -39,13 +38,18 @@ public class MarkController {
         }
     }
 
-//    @GetMapping()
-//    public ResponseEntity<?> settingPoint(@RequestBody List<>){
-//
-//    }
-
-
-
+    @PutMapping()
+    public ResponseEntity<?> settingPoint(@RequestBody Map<String,Integer> points){
+       try {
+           for (String key: points.keySet()) {
+               pointRedis.setPoints(Const.POINT_KEY,key, String.valueOf(points.get(key)));
+           }
+           return new ResponseEntity<>("Setting successfully", HttpStatus.OK);
+       }
+       catch (Exception ex){
+           return new ResponseEntity<>("Cannot Set Point", HttpStatus.BAD_REQUEST);
+       }
+    }
 
     private Map<String,Integer> processMap(Map<String,Integer> map){
         if(map == null || map.isEmpty()){
