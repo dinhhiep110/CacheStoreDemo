@@ -2,11 +2,13 @@ package com.example.cachestoredemo.Dao;
 
 import com.example.cachestoredemo.Entity.Student;
 import com.google.gson.Gson;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class StudentRedis extends BaseRedis{
     private static final String STUDENT_KEY = "Student";
     private final Gson gson = new Gson();

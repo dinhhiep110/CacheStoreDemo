@@ -1,11 +1,20 @@
 package com.example.cachestoredemo.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student extends Person {
 
-    private final int totalGrade;
+    private int totalPoints;
 
-    public Student(String name, String personClass, int totalGrade) {
+    public Student(String name, String personClass, int totalPoints) {
         super(name, personClass);
-        this.totalGrade = totalGrade;
+        this.totalPoints = totalPoints;
     }
 }

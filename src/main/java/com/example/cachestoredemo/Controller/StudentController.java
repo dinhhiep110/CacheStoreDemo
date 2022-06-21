@@ -1,7 +1,7 @@
-package com.example.cachestoredemo.Api;
+package com.example.cachestoredemo.Controller;
 
-import com.example.cachestoredemo.Entity.Teacher;
-import com.example.cachestoredemo.Services.TeacherService;
+import com.example.cachestoredemo.Entity.Student;
+import com.example.cachestoredemo.Services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("api/teachers")
-public class TeacherApi {
+@RequestMapping("/api/students")
+public class StudentController {
     @Autowired
-    TeacherService teacherService;
+    StudentService studentService;
 
     @PostMapping()
-    public ResponseEntity<?> addTeacher(@Validated @RequestBody Teacher teacher){
+    public ResponseEntity<?> addStudent(@Validated @RequestBody Student student){
         try{
-            if(teacher == null){
+            if(student == null){
                 return new ResponseEntity<>("Add UnSuccessfully", HttpStatus.BAD_REQUEST);
             }
-            Teacher newTeacher = new Teacher(teacher.getName(),teacher.getPersonClass(),teacher.getSubject());
-            teacherService.addTeacher(teacher);
+            Student newStudent = new Student(student.getName(),student.getPersonClass(),student.getTotalPoints());
+            studentService.addStudent(student);
             return new ResponseEntity<>("Add Successfully",HttpStatus.OK);
         }
         catch (Exception ex){
@@ -33,17 +33,17 @@ public class TeacherApi {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTeacher(@PathVariable int id, @Validated @RequestBody Teacher teacher){
+    public ResponseEntity<?> updateStudent(@PathVariable int id, @Validated @RequestBody Student student){
         try {
-            if(teacher == null){
+            if(student == null){
                 return new ResponseEntity<>("Student is not existed", HttpStatus.BAD_REQUEST);
             }
-            Teacher oldTeacher = teacherService.getTeacherById(id);
-            teacher.setId(oldTeacher.getId());
-            teacher.setName((teacher.getName() == null) ? oldTeacher.getName() : teacher.getName());
-            teacher.setSubject((teacher.getSubject() == null) ? oldTeacher.getSubject() : teacher.getSubject());
-            teacher.setPersonClass((teacher.getPersonClass() == null) ? oldTeacher.getPersonClass() : teacher.getPersonClass());
-            teacherService.updateTeacher(teacher);
+            Student oldStudent = studentService.getStudentById(id);
+            student.setId(oldStudent.getId());
+            student.setName((student.getName() == null) ? oldStudent.getName() : student.getName());
+            student.setTotalPoints(oldStudent.getTotalPoints());
+            student.setPersonClass((student.getPersonClass() == null) ? oldStudent.getPersonClass() : student.getPersonClass());
+            studentService.updateStudent(student);
             return new ResponseEntity<>("Update Successfully",HttpStatus.OK);
         }
         catch (Exception ex){
@@ -52,15 +52,15 @@ public class TeacherApi {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getAllTeachers(){
+    public ResponseEntity<?> getAllStudents(){
         try{
-            List<Teacher> teachers = teacherService.getTeachers();
-            if(teachers.isEmpty()){
+            List<Student> students = studentService.getStudents();
+            if(students.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else if (Objects.isNull(teachers)) {
+            } else if (Objects.isNull(students)) {
                 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            return new ResponseEntity<>(teachers,HttpStatus.OK);
+            return new ResponseEntity<>(students,HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,13 +68,13 @@ public class TeacherApi {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTeacherById(@PathVariable int id){
+    public ResponseEntity<?> getStudentById(@PathVariable int id){
         try{
-            Teacher teacher = teacherService.getTeacherById(id);
-            if (Objects.isNull(teacher)) {
+            Student student = studentService.getStudentById(id);
+            if (Objects.isNull(student)) {
                 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            return new ResponseEntity<>(teacher,HttpStatus.OK);
+            return new ResponseEntity<>(student,HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,12 +84,12 @@ public class TeacherApi {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable int id){
         try{
-            Teacher teacher = teacherService.getTeacherById(id);
-            if (Objects.isNull(teacher)) {
+            Student student = studentService.getStudentById(id);
+            if (Objects.isNull(student)) {
                 return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            teacherService.deleteTeacher(id);
-            return new ResponseEntity<>(teacher,HttpStatus.OK);
+            studentService.deleteStudent(id);
+            return new ResponseEntity<>(student,HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);

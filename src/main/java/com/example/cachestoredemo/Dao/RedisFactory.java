@@ -8,7 +8,6 @@ public class RedisFactory {
 
     private static JedisPool jedisPool = new JedisPool();
 
-    private static final String KEY = "Grade";
 
     public static Jedis getConnection(){
         //TODO GetTheConnectionFrom ThePool
@@ -30,10 +29,10 @@ public class RedisFactory {
     public static void init(){
         //TODO creatJedisPool
         Jedis jedis = getConnection();
-        if(!jedis.exists(KEY)){
-            jedis.hset(KEY,"A", String.valueOf(Const.GRADE_A));
-            jedis.hset(KEY,"B", String.valueOf(Const.GRADE_B));
-            jedis.hset(KEY,"C", String.valueOf(Const.GRADE_C));
+        if(!jedis.exists(Const.POINT_KEY)){
+            jedis.hset(Const.POINT_KEY,"A", String.valueOf(Const.POINT_A));
+            jedis.hset(Const.POINT_KEY,"B", String.valueOf(Const.POINT_B));
+            jedis.hset(Const.POINT_KEY,"C", String.valueOf(Const.POINT_C));
         }
     }
 

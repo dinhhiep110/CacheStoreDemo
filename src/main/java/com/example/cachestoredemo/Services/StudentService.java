@@ -4,7 +4,7 @@ import com.example.cachestoredemo.Entity.Student;
 
 import java.util.List;
 
-public interface StudentServices {
+public interface StudentService {
     void addStudent(Student student);
 
     void updateStudent(Student student);

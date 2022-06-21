@@ -6,7 +6,7 @@ import java.util.Map;
 
 @Repository
 public class PointRedis extends BaseRedis{
-    public Map<String,String> getGrades(String key){
+    public Map<String,String> getPoints(String key){
         return getAll(key);
     }
 }
