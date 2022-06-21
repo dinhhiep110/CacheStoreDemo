@@ -19,17 +19,16 @@ public class MarkController {
 
     @Autowired
     PointRedis pointRedis;
-    static Map<String,Integer> map = CacheMemory.get();
 
     @GetMapping("/{sid}/{point}")
     public ResponseEntity<?> markPoint(@PathVariable int sid,@PathVariable String point){
-        map = processMap(map);
+        Map<String,Integer> mapPoint = CacheMemory.get();
         Student student = studentService.getStudentById(sid);
-        if(student == null || !map.containsKey(point)){
+        if(student == null || !CacheMemory.isPointExisted(point)){
             return new ResponseEntity<>("Cannot mark points", HttpStatus.BAD_REQUEST);
         }
         try {
-            student.setTotalPoints(student.getTotalPoints() + map.get(point));
+            student.setTotalPoints(student.getTotalPoints() + mapPoint.get(point));
             studentService.updateStudent(student);
             return new ResponseEntity<>("Points are marked", HttpStatus.OK);
         }
@@ -43,6 +42,7 @@ public class MarkController {
        try {
            for (String key: points.keySet()) {
                pointRedis.setPoints(Const.POINT_KEY,key, String.valueOf(points.get(key)));
+               CacheMemory.update(points);
            }
            return new ResponseEntity<>("Setting successfully", HttpStatus.OK);
        }
@@ -51,12 +51,4 @@ public class MarkController {
        }
     }
 
-    private Map<String,Integer> processMap(Map<String,Integer> map){
-        if(map == null || map.isEmpty()){
-            Map<String, String> points = pointRedis.getPoints(Const.POINT_KEY);
-            CacheMemory.add(points);
-            map = CacheMemory.get();
-        }
-        return map;
-    }
 }

@@ -1,27 +1,35 @@
 package com.example.cachestoredemo;
 
+
 import com.example.cachestoredemo.Dao.PointRedis;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.cachestoredemo.Until.Const;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CacheMemory {
-    static Map<String,Integer> map = new ConcurrentHashMap<>();
 
-    @Autowired
-    PointRedis pointRedis;
-
-    public static void add(Map<String,String> points){
-        for (String key: points.keySet()) {
-            map.put(key,Integer.parseInt(points.get(key)));
-        }
+    public static Map<String,Integer> map = new ConcurrentHashMap<>();
+    public static void initCache(){
+        map = new PointRedis().getPoints(Const.POINT_KEY);
+    }
+    public static void update(Map<String,Integer> points){
+        map = points;
     }
 
     public static Map<String,Integer> get(){
         if(map == null || map.isEmpty()){
-            return null;
+            return new ConcurrentHashMap<>();
         }
         return map;
     }
+
+    public static boolean isPointExisted(String point){
+        return map.containsKey(point);
+    }
+
 }
