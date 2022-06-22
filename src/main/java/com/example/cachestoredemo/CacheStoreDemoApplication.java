@@ -1,8 +1,6 @@
 package com.example.cachestoredemo;
 
-import com.example.cachestoredemo.Dao.PointRedis;
 import com.example.cachestoredemo.Dao.RedisFactory;
-import com.example.cachestoredemo.Until.Const;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

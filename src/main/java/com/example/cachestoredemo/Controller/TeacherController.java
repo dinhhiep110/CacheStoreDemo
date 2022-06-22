@@ -24,7 +24,7 @@ public class TeacherController {
                 return new ResponseEntity<>("Add UnSuccessfully", HttpStatus.BAD_REQUEST);
             }
             Teacher newTeacher = new Teacher(teacher.getName(),teacher.getPersonClass(),teacher.getSubject());
-            teacherService.addTeacher(teacher);
+            teacherService.addTeacher(newTeacher);
             return new ResponseEntity<>("Add Successfully",HttpStatus.OK);
         }
         catch (Exception ex){

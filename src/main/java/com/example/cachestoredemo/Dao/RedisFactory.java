@@ -8,7 +8,6 @@ public class RedisFactory {
 
     private static JedisPool jedisPool = new JedisPool();
 
-
     public static Jedis getConnection(){
         //TODO GetTheConnectionFrom ThePool
         Jedis jedis = null;

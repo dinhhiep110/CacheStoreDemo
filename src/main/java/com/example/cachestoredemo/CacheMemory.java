@@ -1,7 +1,7 @@
 package com.example.cachestoredemo;
 
 
-import com.example.cachestoredemo.Dao.PointRedis;
+import com.example.cachestoredemo.Dao.PointRedisImpl;
 import com.example.cachestoredemo.Until.Const;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class CacheMemory {
 
     public static Map<String,Integer> map = new ConcurrentHashMap<>();
     public static void initCache(){
-        map = new PointRedis().getPoints(Const.POINT_KEY);
+        map = new PointRedisImpl().getPoints(Const.POINT_KEY);
     }
     public static void update(Map<String,Integer> points){
         map = points;

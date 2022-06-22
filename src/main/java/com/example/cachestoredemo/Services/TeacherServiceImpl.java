@@ -1,8 +1,7 @@
 package com.example.cachestoredemo.Services;
 
-import com.example.cachestoredemo.Dao.TeacherRedis;
+import com.example.cachestoredemo.Dao.TeacherRedisImpl;
 import com.example.cachestoredemo.Entity.Teacher;
-import com.example.cachestoredemo.Services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Service
 public class TeacherServiceImpl implements TeacherService {
     @Autowired
-    TeacherRedis teacherRedis;
+    TeacherRedisImpl teacherRedis;
 
 
     @Override

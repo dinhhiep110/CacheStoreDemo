@@ -10,7 +10,6 @@ public abstract class BaseRedis {
         return  RedisFactory.getConnection();
     }
 
-
     protected void set(String key,String filed,String value){
         try {
             Jedis jedis = getConnection();

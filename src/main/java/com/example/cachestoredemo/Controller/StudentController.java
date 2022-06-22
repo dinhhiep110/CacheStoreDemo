@@ -1,7 +1,8 @@
 package com.example.cachestoredemo.Controller;
 
+import com.example.cachestoredemo.Api.StudentApi.*;
 import com.example.cachestoredemo.Entity.Student;
-import com.example.cachestoredemo.Services.StudentService;
+import com.example.cachestoredemo.Request.StudentRequest.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,85 +15,49 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
+
     @Autowired
-    StudentService studentService;
+    StudentCreateApi studentCreateApi;
+
+    @Autowired
+    StudentUpdateApi studentUpdateApi;
+
+    @Autowired
+    StudentGetAllApi studentGetAllApi;
+
+    @Autowired
+    StudentGetByIdApi studentGetByIdApi;
+
+    @Autowired
+    StudentDeleteApi studentDeleteApi;
 
     @PostMapping()
     public ResponseEntity<?> addStudent(@Validated @RequestBody Student student){
-        try{
-            if(student == null){
-                return new ResponseEntity<>("Add UnSuccessfully", HttpStatus.BAD_REQUEST);
-            }
-            Student newStudent = new Student(student.getName(),student.getPersonClass(),student.getTotalPoints());
-            studentService.addStudent(student);
-            return new ResponseEntity<>("Add Successfully",HttpStatus.OK);
-        }
-        catch (Exception ex){
-            return new ResponseEntity<>("Add UnSuccessfully", HttpStatus.BAD_REQUEST);
-        }
+        return (studentCreateApi.doExecute(new CreateStudentRequest(student)) == null) ?
+                new ResponseEntity<>("Cannot Add Student",HttpStatus.BAD_REQUEST) :
+                studentCreateApi.doExecute(new CreateStudentRequest(student));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable int id, @Validated @RequestBody Student student){
-        try {
-            if(student == null){
-                return new ResponseEntity<>("Student is not existed", HttpStatus.BAD_REQUEST);
-            }
-            Student oldStudent = studentService.getStudentById(id);
-            student.setId(oldStudent.getId());
-            student.setName((student.getName() == null) ? oldStudent.getName() : student.getName());
-            student.setTotalPoints(oldStudent.getTotalPoints());
-            student.setPersonClass((student.getPersonClass() == null) ? oldStudent.getPersonClass() : student.getPersonClass());
-            studentService.updateStudent(student);
-            return new ResponseEntity<>("Update Successfully",HttpStatus.OK);
-        }
-        catch (Exception ex){
-            return new ResponseEntity<>("Update UnSuccessfully", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> updateStudent(@Validated @PathVariable int id, @Validated @RequestBody Student student){
+        student.setId(id);
+        return studentUpdateApi.doExecute(new UpdateStudentRequest(student));
     }
 
     @GetMapping()
     public ResponseEntity<?> getAllStudents(){
-        try{
-            List<Student> students = studentService.getStudents();
-            if(students.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else if (Objects.isNull(students)) {
-                return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(students,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return studentGetAllApi.doExecute(new GetAllStudentRequest());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getStudentById(@PathVariable int id){
-        try{
-            Student student = studentService.getStudentById(id);
-            if (Objects.isNull(student)) {
-                return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(student,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> getStudentById(@Validated @PathVariable int id){
+        return (studentGetByIdApi.doExecute(new GetStudentByIdRequest(id)) == null) ?
+                new ResponseEntity<>("Cannot Find Student",HttpStatus.BAD_REQUEST) :
+                studentGetByIdApi.doExecute(new GetStudentByIdRequest(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable int id){
-        try{
-            Student student = studentService.getStudentById(id);
-            if (Objects.isNull(student)) {
-                return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            studentService.deleteStudent(id);
-            return new ResponseEntity<>(student,HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> deleteStudent(@Validated @PathVariable int id){
+        return studentDeleteApi.doExecute(new DeleteStudentRequest(id));
     }
 }
