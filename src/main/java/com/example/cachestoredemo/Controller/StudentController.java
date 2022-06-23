@@ -4,13 +4,9 @@ import com.example.cachestoredemo.Api.StudentApi.*;
 import com.example.cachestoredemo.Entity.Student;
 import com.example.cachestoredemo.Request.StudentRequest.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/students")
@@ -33,9 +29,7 @@ public class StudentController {
 
     @PostMapping()
     public ResponseEntity<?> addStudent(@Validated @RequestBody Student student){
-        return (studentCreateApi.doExecute(new CreateStudentRequest(student)) == null) ?
-                new ResponseEntity<>("Cannot Add Student",HttpStatus.BAD_REQUEST) :
-                studentCreateApi.doExecute(new CreateStudentRequest(student));
+        return studentCreateApi.doExecute(new CreateStudentRequest(student));
     }
 
     @PutMapping("/{id}")
@@ -51,9 +45,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudentById(@Validated @PathVariable int id){
-        return (studentGetByIdApi.doExecute(new GetStudentByIdRequest(id)) == null) ?
-                new ResponseEntity<>("Cannot Find Student",HttpStatus.BAD_REQUEST) :
-                studentGetByIdApi.doExecute(new GetStudentByIdRequest(id));
+        return studentGetByIdApi.doExecute(new GetStudentByIdRequest(id));
     }
 
     @DeleteMapping("/{id}")

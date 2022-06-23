@@ -2,37 +2,29 @@ package com.example.cachestoredemo.Api.StudentApi;
 
 import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Student;
-import com.example.cachestoredemo.Request.BaseRequest;
-import com.example.cachestoredemo.Respond.BaseRespond;
+import com.example.cachestoredemo.Request.StudentRequest.GetAllStudentRequest;
 import com.example.cachestoredemo.Respond.StudentRespond;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
 @Component
-public class StudentGetAllApi extends BaseApi {
+public class StudentGetAllApi extends BaseApi<GetAllStudentRequest,StudentRespond> {
+
     @Override
-    protected ResponseEntity<BaseRespond> execute(BaseRequest request) {
-        try{
-            List<Student> students = studentService.getStudents();
-            if(students.isEmpty()){
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else if (Objects.isNull(students)) {
-                return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(new StudentRespond("List Students",students),HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    protected StudentRespond execute(GetAllStudentRequest request) {
+        List<Student> students = studentService.getStudents();
+        return new StudentRespond("List Students",students);
     }
 
     @Override
-    protected boolean isValidatedRequest(BaseRequest request) {
-        return true;
+    protected boolean isValidatedRequest(GetAllStudentRequest request) {
+        try{
+            List<Student> students = studentService.getStudents();
+            return !students.isEmpty();
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 }

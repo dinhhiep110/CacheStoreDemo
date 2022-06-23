@@ -2,15 +2,9 @@ package com.example.cachestoredemo.Controller;
 
 import com.example.cachestoredemo.Api.MarkApi.MarkPointApi;
 import com.example.cachestoredemo.Api.MarkApi.PointSettingApi;
-import com.example.cachestoredemo.CacheMemory;
-import com.example.cachestoredemo.Dao.PointRedisImpl;
-import com.example.cachestoredemo.Entity.Student;
-import com.example.cachestoredemo.Request.MarkApi.MarkPointRequest;
-import com.example.cachestoredemo.Request.MarkApi.PointSettingRequest;
-import com.example.cachestoredemo.Services.StudentService;
-import com.example.cachestoredemo.Until.Const;
+import com.example.cachestoredemo.Request.MarkRequest.MarkPointRequest;
+import com.example.cachestoredemo.Request.MarkRequest.PointSettingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

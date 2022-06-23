@@ -2,39 +2,28 @@ package com.example.cachestoredemo.Api.StudentApi;
 
 import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Student;
-import com.example.cachestoredemo.Request.BaseRequest;
-import com.example.cachestoredemo.Respond.BaseRespond;
+import com.example.cachestoredemo.Request.StudentRequest.GetStudentByIdRequest;
 import com.example.cachestoredemo.Respond.StudentRespond;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
-public class StudentGetByIdApi extends BaseApi {
+public class StudentGetByIdApi extends BaseApi<GetStudentByIdRequest,StudentRespond> {
     @Override
-    protected ResponseEntity<BaseRespond> execute(BaseRequest request) {
-        try{
-            Student student = studentService.getStudentById((int) request.getData());
-            if (Objects.isNull(student)) {
-                return new ResponseEntity<>(new StudentRespond("Student is not existed",null), HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(new StudentRespond("Find Student Successfully",student),HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(new StudentRespond("Student is not existed",null),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    protected StudentRespond execute(GetStudentByIdRequest request) {
+        Student student = studentService.getStudentById(request.getData());
+        return new StudentRespond("Find Student Successfully",student);
     }
 
     @Override
-    protected boolean isValidatedRequest(BaseRequest request) {
-        try {
-
+    protected boolean isValidatedRequest(GetStudentByIdRequest request) {
+        try{
+            Student student = studentService.getStudentById( request.getData());
+            return !Objects.isNull(student);
         }
-        catch (Exception ex){
-            return false;
+        catch (Exception e){
+            return true;
         }
-        return true;
     }
 }

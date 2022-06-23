@@ -1,4 +1,4 @@
-package com.example.cachestoredemo.Request.MarkApi;
+package com.example.cachestoredemo.Request.MarkRequest;
 
 import com.example.cachestoredemo.Request.BaseRequest;
 import lombok.Getter;

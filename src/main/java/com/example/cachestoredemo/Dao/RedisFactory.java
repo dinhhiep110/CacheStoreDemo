@@ -6,7 +6,7 @@ import redis.clients.jedis.JedisPool;
 
 public class RedisFactory {
 
-    private static JedisPool jedisPool = new JedisPool();
+    private static final JedisPool jedisPool = new JedisPool();
 
     public static Jedis getConnection(){
         //TODO GetTheConnectionFrom ThePool
@@ -35,7 +35,4 @@ public class RedisFactory {
         }
     }
 
-    public static void close(){
-        jedisPool.close();
-    }
 }

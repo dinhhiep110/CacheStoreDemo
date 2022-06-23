@@ -11,8 +11,7 @@ public abstract class BaseRedis {
     }
 
     protected void set(String key,String filed,String value){
-        try {
-            Jedis jedis = getConnection();
+        try (Jedis jedis = getConnection()){
             jedis.hset(key,filed,value);
         }catch(Exception ex){
             System.err.println(ex.getMessage());
@@ -20,8 +19,7 @@ public abstract class BaseRedis {
     }
 
     protected Map<String, String> getAll(String key){
-        try {
-            Jedis jedis = getConnection();
+        try( Jedis jedis = getConnection()) {
             return jedis.hgetAll(key);
         }catch(Exception ex){
             System.err.println(ex.getMessage());
@@ -30,8 +28,7 @@ public abstract class BaseRedis {
     }
 
     protected String get(String key,String field){
-        try {
-            Jedis jedis = getConnection();
+        try(Jedis jedis = getConnection()) {
             return jedis.hget(key,field);
         }catch(Exception ex){
             System.err.println(ex.getMessage());
@@ -40,8 +37,7 @@ public abstract class BaseRedis {
     }
 
     protected void delete(String key,String filed){
-        try {
-            Jedis jedis = getConnection();
+        try (Jedis jedis = getConnection()){
             jedis.hdel(key,filed);
         }catch(Exception ex){
             System.err.println(ex.getMessage());

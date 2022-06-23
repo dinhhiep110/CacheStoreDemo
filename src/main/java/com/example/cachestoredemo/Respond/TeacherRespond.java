@@ -3,12 +3,12 @@ package com.example.cachestoredemo.Respond;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class StudentRespond extends BaseRespond{
+@Setter
+public class TeacherRespond extends BaseRespond{
     private final Object data;
 
-    public StudentRespond(String message, Object data) {
+    public TeacherRespond(String message, Object data) {
         super(message);
         this.data = data;
     }
