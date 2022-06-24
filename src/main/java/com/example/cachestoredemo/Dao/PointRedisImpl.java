@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class PointRedisImpl extends BaseRedis implements PointRedis{
 
-    Gson gson = new Gson();
     public Map<String,Integer> getPoints(String key){
        //TODO convert Map<String,String> to Map<String,Int>;
         Map<String,Integer> map = new ConcurrentHashMap<>();

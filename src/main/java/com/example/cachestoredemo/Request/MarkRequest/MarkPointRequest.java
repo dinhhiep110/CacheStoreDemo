@@ -4,13 +4,12 @@ import com.example.cachestoredemo.Request.BaseRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
-public class MarkPointRequest extends BaseRequest<String> {
-    private int sid;
-
-    public MarkPointRequest(String data, int sid) {
+public class MarkPointRequest extends BaseRequest<Map<String,String>> {
+    public MarkPointRequest(Map<String,String> data) {
         super(data);
-        this.sid = sid;
     }
 }

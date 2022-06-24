@@ -4,6 +4,8 @@ import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Teacher;
 import com.example.cachestoredemo.Request.TeacherRequest.UpdateTeacherRequest;
 import com.example.cachestoredemo.Respond.TeacherRespond;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,27 +14,38 @@ public class TeacherUpdateApi extends BaseApi<UpdateTeacherRequest,TeacherRespon
     @Override
     protected TeacherRespond execute(UpdateTeacherRequest request) {
         Teacher teacher = request.getData();
-        int id = request.getTid();
+        String id = request.getId();
         Teacher oldTeacher = teacherService.getTeacherById(id);
-        teacher.setId(oldTeacher.getId());
-        teacher.setName((teacher.getName() == null) ? oldTeacher.getName() : teacher.getName());
-        teacher.setSubject((teacher.getSubject() == null) ? oldTeacher.getSubject() : teacher.getSubject());
-        teacher.setPersonClass((teacher.getPersonClass() == null) ? oldTeacher.getPersonClass() : teacher.getPersonClass());
+        teacher.setId(id);
+        String teacherName = teacher.getName();
+        String oldTeacherName = oldTeacher.getName();
+        String name = (Util.isNull(teacherName)) ? oldTeacherName : teacherName;
+        teacher.setName(name);
+        String teacherSubject = teacher.getSubject();
+        String oldTeacherSubject = oldTeacher.getSubject();
+        String subject = (Util.isNull(teacherSubject)) ? oldTeacherSubject : teacherSubject;
+        teacher.setSubject(subject);
+        String teacherClass = teacher.getPersonClass();
+        String oldTeacherClass = oldTeacher.getPersonClass();
+        String Class = (Util.isNull(teacherClass)) ? oldTeacherClass : teacherClass;
+        teacher.setPersonClass(Class);
         teacherService.updateTeacher(teacher);
         return new TeacherRespond("Update Successfully",teacher);
     }
 
     @Override
-    protected boolean isValidatedRequest(UpdateTeacherRequest request) {
-        Teacher teacher = request.getData();
+    protected HttpStatus validateRequest(UpdateTeacherRequest request) {
         try {
-            if(teacher == null){
-                return false;
+            String id = request.getId();
+            Teacher oldTeacher = teacherService.getTeacherById(id);
+            if(Util.isNull(oldTeacher)){
+                return HttpStatus.BAD_REQUEST;
             }
         }
-        catch (Exception ex){
-            return false;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
-        return true;
+        return HttpStatus.OK;
     }
 }

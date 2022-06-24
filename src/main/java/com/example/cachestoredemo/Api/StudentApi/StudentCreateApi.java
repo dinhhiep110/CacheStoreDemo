@@ -4,6 +4,8 @@ import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Student;
 import com.example.cachestoredemo.Request.StudentRequest.CreateStudentRequest;
 import com.example.cachestoredemo.Respond.StudentRespond;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,17 +20,19 @@ public class StudentCreateApi extends BaseApi<CreateStudentRequest,StudentRespon
     }
 
     @Override
-    protected boolean isValidatedRequest(CreateStudentRequest request) {
-        Student student = request.getData();
+    protected HttpStatus validateRequest(CreateStudentRequest request) {
         try {
-            if(student == null || student.getName() == null || student.getName().isEmpty()
-                    || student.getPersonClass() == null ||  student.getPersonClass().isEmpty()){
-                return false;
+            Student student = request.getData();
+            String studentName = student.getName();
+            String studentClass = student.getPersonClass();
+            if(Util.isNull(student) || Util.isNull(studentName) || Util.isNull(studentClass)){
+                return HttpStatus.BAD_REQUEST;
             }
         }
-        catch (Exception ex){
-            return false;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
-        return true;
+        return HttpStatus.OK;
     }
 }

@@ -13,4 +13,5 @@ public class CreateStudentRequest extends BaseRequest<Student> {
     public CreateStudentRequest(Student data) {
         super(data);
     }
+
 }

@@ -4,6 +4,9 @@ import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Teacher;
 import com.example.cachestoredemo.Request.TeacherRequest.CreateTeacherRequest;
 import com.example.cachestoredemo.Respond.TeacherRespond;
+import com.example.cachestoredemo.Until.Util;
+import com.google.gson.annotations.Until;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,18 +21,18 @@ public class TeacherCreateApi extends BaseApi<CreateTeacherRequest, TeacherRespo
     }
 
     @Override
-    protected boolean isValidatedRequest(CreateTeacherRequest request) {
-        Teacher teacher = request.getData();
+    protected HttpStatus validateRequest(CreateTeacherRequest request) {
         try {
-            if(teacher == null || teacher.getName() == null || teacher.getName().isEmpty()
-                    || teacher.getPersonClass() == null ||  teacher.getPersonClass().isEmpty()
-                    || teacher.getSubject() == null || teacher.getSubject().isEmpty()){
-                return false;
+            Teacher teacher = request.getData();
+            if (Util.isNull(teacher) || Util.isNull(teacher.getName())
+            || Util.isNull(teacher.getPersonClass()) || Util.isNull(teacher.getSubject())) {
+                return HttpStatus.BAD_REQUEST;
             }
         }
-        catch (Exception e){
-            return false;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
-        return true;
+        return HttpStatus.OK;
     }
 }

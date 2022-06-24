@@ -4,6 +4,8 @@ import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Student;
 import com.example.cachestoredemo.Request.StudentRequest.GetStudentByIdRequest;
 import com.example.cachestoredemo.Respond.StudentRespond;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -12,18 +14,24 @@ import java.util.Objects;
 public class StudentGetByIdApi extends BaseApi<GetStudentByIdRequest,StudentRespond> {
     @Override
     protected StudentRespond execute(GetStudentByIdRequest request) {
-        Student student = studentService.getStudentById(request.getData());
+        String id = request.getData();
+        Student student = studentService.getStudentById(id);
         return new StudentRespond("Find Student Successfully",student);
     }
 
     @Override
-    protected boolean isValidatedRequest(GetStudentByIdRequest request) {
+    protected HttpStatus validateRequest(GetStudentByIdRequest request) {
         try{
-            Student student = studentService.getStudentById( request.getData());
-            return !Objects.isNull(student);
+            String id = request.getData();
+            Student student = studentService.getStudentById(id);
+             if(Util.isNull(student)){
+                 return HttpStatus.BAD_REQUEST;
+             }
         }
-        catch (Exception e){
-            return true;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
+        return HttpStatus.OK;
     }
 }

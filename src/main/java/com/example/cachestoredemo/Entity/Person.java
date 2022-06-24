@@ -1,23 +1,22 @@
 package com.example.cachestoredemo.Entity;
 
-import com.example.cachestoredemo.Until.Const;
-import com.example.cachestoredemo.Until.PersonUntil;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.cachestoredemo.Until.Util;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Person {
-    private int id;
+    @NonNull
+    private String id;
+    @NonNull
     private String name;
+    @NonNull
     private String personClass;
 
     public Person(String name, String personClass) {
-        this.id = PersonUntil.getRandomInteger(Const.MAX_ID);
+        this.id = Util.getRandomUUID();
         this.name = name;
         this.personClass = personClass;
     }

@@ -4,9 +4,10 @@ import com.example.cachestoredemo.Api.BaseApi;
 import com.example.cachestoredemo.Entity.Student;
 import com.example.cachestoredemo.Request.StudentRequest.DeleteStudentRequest;
 import com.example.cachestoredemo.Respond.StudentRespond;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
 
 @Component
 public class StudentDeleteApi extends BaseApi<DeleteStudentRequest,StudentRespond> {
@@ -14,24 +15,25 @@ public class StudentDeleteApi extends BaseApi<DeleteStudentRequest,StudentRespon
 
     @Override
     protected StudentRespond execute(DeleteStudentRequest request) {
-        int id = request.getData();
-        Student student = studentService.getStudentById(id);
+        String id = request.getData();
+        Student studentDeleted = studentService.getStudentById(id);
         studentService.deleteStudent(id);
-        return new StudentRespond("Delete Successfully",student);
+        return new StudentRespond("Delete Successfully",studentDeleted);
     }
 
     @Override
-    protected boolean isValidatedRequest(DeleteStudentRequest request) {
+    protected HttpStatus validateRequest(DeleteStudentRequest request) {
         try{
-            int id = request.getData();
+            String id = request.getData();
             Student student = studentService.getStudentById(id);
-            if (Objects.isNull(student)) {
-                return false;
+            if (Util.isNull(student)) {
+                return HttpStatus.BAD_REQUEST;
             }
         }
-        catch (Exception e){
-            return false;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
-        return true;
+        return HttpStatus.OK;
     }
 }

@@ -1,9 +1,6 @@
 package com.example.cachestoredemo.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
@@ -11,6 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Student extends Person {
 
+    @NonNull
     private int totalPoints;
 
     public Student(String name, String personClass, int totalPoints) {

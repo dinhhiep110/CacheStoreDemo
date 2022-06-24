@@ -4,6 +4,7 @@ import com.example.cachestoredemo.Api.MarkApi.MarkPointApi;
 import com.example.cachestoredemo.Api.MarkApi.PointSettingApi;
 import com.example.cachestoredemo.Request.MarkRequest.MarkPointRequest;
 import com.example.cachestoredemo.Request.MarkRequest.PointSettingRequest;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController()
-@RequestMapping("/api/marks")
+@RequestMapping("/api")
 public class MarkController {
     @Autowired
     PointSettingApi pointSettingApi;
 
     @Autowired
     MarkPointApi markPointApi;
-    @GetMapping("/{sid}/{point}")
-    public ResponseEntity<?> markPoint(@PathVariable int sid,@PathVariable String point){
-        return markPointApi.doExecute(new MarkPointRequest(point,sid));
+    @PutMapping ("/points/mark")
+    public ResponseEntity<?> markPoint(@Validated @NonNull @RequestBody Map<String,String> pointMarked){
+        return markPointApi.doExecute(new MarkPointRequest(pointMarked));
     }
 
-    @PutMapping()
-    public ResponseEntity<?> settingPoint(@Validated @RequestBody Map<String,Integer> points){
+    @PutMapping("/points/setting")
+    public ResponseEntity<?> settingPoint(@Validated @NonNull @RequestBody Map<String,Integer> points){
        return pointSettingApi.doExecute(new PointSettingRequest(points));
     }
 

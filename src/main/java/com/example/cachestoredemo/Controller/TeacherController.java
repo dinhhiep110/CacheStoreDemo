@@ -33,7 +33,7 @@ public class TeacherController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTeacher(@PathVariable int id, @Validated @RequestBody Teacher teacher){
+    public ResponseEntity<?> updateTeacher(@PathVariable String id, @Validated @RequestBody Teacher teacher){
         return teacherUpdateApi.doExecute(new UpdateTeacherRequest(teacher,id));
     }
 
@@ -43,12 +43,12 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTeacherById(@NonNull @Validated @PathVariable int id){
+    public ResponseEntity<?> getTeacherById(@NonNull @Validated @PathVariable String id){
         return teacherGetByIdApi.doExecute(new GetTeacherByIdRequest(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@NonNull @Validated @PathVariable int id){
+    public ResponseEntity<?> deleteStudent(@NonNull @Validated @PathVariable String id){
         return teacherDeleteApi.doExecute(new DeleteTeacherRequest(id));
     }
 }

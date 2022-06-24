@@ -5,6 +5,8 @@ import com.example.cachestoredemo.CacheMemory;
 import com.example.cachestoredemo.Request.MarkRequest.PointSettingRequest;
 import com.example.cachestoredemo.Respond.PointRespond;
 import com.example.cachestoredemo.Until.Const;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -23,16 +25,17 @@ public class PointSettingApi extends BaseApi<PointSettingRequest, PointRespond> 
     }
 
     @Override
-    protected boolean isValidatedRequest(PointSettingRequest request) {
-        Map<String,Integer> points = request.getData();
+    protected HttpStatus validateRequest(PointSettingRequest request) {
         try {
-            if(points == null){
-                return false;
+            Map<String,Integer> points = request.getData();
+            if(Util.isNull(points)){
+                return HttpStatus.BAD_REQUEST;
             }
         }
-        catch (Exception ex){
-            return false;
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
-        return true;
+        return HttpStatus.OK;
     }
 }

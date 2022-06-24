@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DeleteTeacherRequest extends BaseRequest<Integer> {
-    public DeleteTeacherRequest(Integer data) {
+public class DeleteTeacherRequest extends BaseRequest<String> {
+    public DeleteTeacherRequest(String data) {
         super(data);
     }
 }

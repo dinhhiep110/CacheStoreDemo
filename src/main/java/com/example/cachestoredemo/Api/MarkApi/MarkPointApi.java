@@ -5,34 +5,50 @@ import com.example.cachestoredemo.CacheMemory;
 import com.example.cachestoredemo.Entity.Student;
 import com.example.cachestoredemo.Request.MarkRequest.MarkPointRequest;
 import com.example.cachestoredemo.Respond.PointRespond;
+import com.example.cachestoredemo.Until.Util;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class MarkPointApi extends BaseApi <MarkPointRequest,PointRespond>{
     @Override
     protected PointRespond execute(MarkPointRequest request) {
-        int sid = request.getSid();
-        String point = request.getData();
+        Map<String,String> map = request.getData();
         Map<String,Integer> mapPoint = CacheMemory.get();
-        Student student = studentService.getStudentById(sid);
-        student.setTotalPoints(student.getTotalPoints() + mapPoint.get(point));
-        studentService.updateStudent(student);
-        return new PointRespond("Points are marked : " + point + " " + mapPoint.get(point),student.getTotalPoints());
+        List<Student> studentMarked = new ArrayList<>();
+        for (String keys: map.keySet()) {
+            Student student = studentService.getStudentById(keys);
+            String point = map.get(keys);
+            student.setTotalPoints(student.getTotalPoints() + mapPoint.get(point));
+            studentMarked.add(student);
+            studentService.updateStudent(student);
+        }
+        return new PointRespond("Marked Point Successfully",studentMarked);
     }
 
     @Override
-    protected boolean isValidatedRequest(MarkPointRequest request) {
-        int sid = request.getSid();
-        String point =  request.getData();
-        Student student = studentService.getStudentById(sid);
+    protected HttpStatus validateRequest(MarkPointRequest request) {
         try {
-            return student != null && CacheMemory.isPointExisted(point);
+            Map<String,String> map = request.getData();
+            if(Util.isNull(map) || map.isEmpty()){
+                return HttpStatus.UNPROCESSABLE_ENTITY;
+            }
+            for (String keys: map.keySet()) {
+                Student student = studentService.getStudentById(keys);
+                if(Util.isNull(student) || !CacheMemory.isPointExisted(map.get(keys))){
+                    return HttpStatus.BAD_REQUEST;
+                }
+            }
         }
         catch (Exception exception){
-            return false;
+            System.out.println(exception.getMessage());
+            return HttpStatus.NOT_ACCEPTABLE;
         }
+        return HttpStatus.OK;
     }
 
 }

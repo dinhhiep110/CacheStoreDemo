@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetStudentByIdRequest extends BaseRequest<Integer> {
-    public GetStudentByIdRequest(Integer data) {
+public class GetStudentByIdRequest extends BaseRequest<String> {
+    public GetStudentByIdRequest(String data) {
         super(data);
     }
 }

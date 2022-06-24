@@ -20,14 +20,15 @@ public abstract class BaseApi <R extends BaseRequest, T extends BaseRespond>{
     @Autowired
     protected PointRedisImpl pointRedis;
     public ResponseEntity<?> doExecute(R request){
-        if(!isValidatedRequest(request)){
-            return new ResponseEntity<>(new BaseRespond("Invalid Request"), HttpStatus.BAD_REQUEST);
+        HttpStatus statusCode = validateRequest(request);
+        if(statusCode != HttpStatus.OK){
+            return new ResponseEntity<>("Invalid Request", statusCode);
         }
         T response = execute(request);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response,statusCode);
     }
 
     protected abstract T execute(R request);
 
-    protected abstract boolean isValidatedRequest(R request);
+    protected abstract HttpStatus validateRequest(R request);
 }

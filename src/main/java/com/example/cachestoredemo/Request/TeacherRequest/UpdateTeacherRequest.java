@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateTeacherRequest extends BaseRequest<Teacher> {
-    private int tid;
+    private String id;
 
-    public UpdateTeacherRequest(Teacher data, int tid) {
+    public UpdateTeacherRequest(Teacher data,String id) {
         super(data);
-        this.tid = tid;
+        this.id = id;
     }
 }

@@ -11,7 +11,7 @@ public interface TeacherService {
 
     List<Teacher> getTeachers();
 
-    Teacher getTeacherById(int id);
+    Teacher getTeacherById(String id);
 
-    void deleteTeacher(int id);
+    void deleteTeacher(String id);
 }

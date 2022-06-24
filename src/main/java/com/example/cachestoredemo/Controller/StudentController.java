@@ -33,7 +33,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateStudent(@Validated @PathVariable int id, @Validated @RequestBody Student student){
+    public ResponseEntity<?> updateStudent(@Validated @PathVariable String id, @Validated @RequestBody Student student){
         student.setId(id);
         return studentUpdateApi.doExecute(new UpdateStudentRequest(student));
     }
@@ -44,12 +44,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getStudentById(@Validated @PathVariable int id){
+    public ResponseEntity<?> getStudentById(@Validated @PathVariable String id){
         return studentGetByIdApi.doExecute(new GetStudentByIdRequest(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@Validated @PathVariable int id){
+    public ResponseEntity<?> deleteStudent(@Validated @PathVariable String id){
         return studentDeleteApi.doExecute(new DeleteStudentRequest(id));
     }
 }
