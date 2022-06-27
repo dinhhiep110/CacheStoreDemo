@@ -1,7 +1,6 @@
 package com.example.cachestoredemo.dao;
 
 import com.example.cachestoredemo.entities.Teacher;
-import com.example.cachestoredemo.utils.GsonTeacherUtil;
 import com.example.cachestoredemo.utils.GsonUtil;
 import org.springframework.stereotype.Repository;
 
@@ -13,12 +12,12 @@ public class TeacherRedisImpl extends AbstractRepository<Teacher> implements Tea
 
     @Override
     protected Teacher convertToEntity(String string) {
-        return new GsonTeacherUtil().convertToObject(string);
+        return GsonUtil.convertToObject(string,Teacher.class);
     }
 
     @Override
     protected String convertToDatabaseObject(Teacher entity) {
-        return new GsonTeacherUtil().covertFromObject(entity);
+        return GsonUtil.covertFromObject(entity);
     }
 
     @Override

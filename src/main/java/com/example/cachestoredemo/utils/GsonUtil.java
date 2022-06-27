@@ -1,11 +1,16 @@
 package com.example.cachestoredemo.utils;
+import com.example.cachestoredemo.entities.Student;
 import com.google.gson.Gson;
 
 
-public abstract class GsonUtil<T> {
+public class GsonUtil {
 
-    protected final Gson gson = new Gson();
-    public abstract T convertToObject(String stringObject);
+    private static final Gson gson = new Gson();
+    public static <T> T convertToObject(String stringObject,Class<T> clazz){
+        return gson.fromJson(stringObject, clazz);
+    }
 
-    public abstract String covertFromObject(Object object);
+    public static String covertFromObject(Object object){
+        return gson.toJson(object);
+    }
 }
