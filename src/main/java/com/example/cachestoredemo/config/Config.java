@@ -1,0 +1,7 @@
+package com.example.cachestoredemo.config;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class Config {
+}

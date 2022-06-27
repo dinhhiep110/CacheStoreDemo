@@ -1,8 +1,8 @@
 package com.example.cachestoredemo;
 
 
-import com.example.cachestoredemo.Dao.PointRedisImpl;
-import com.example.cachestoredemo.Until.Const;
+import com.example.cachestoredemo.dao.PointRedisImpl;
+import com.example.cachestoredemo.utils.Const;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
