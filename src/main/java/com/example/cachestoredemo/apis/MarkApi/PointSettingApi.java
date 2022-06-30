@@ -2,9 +2,9 @@ package com.example.cachestoredemo.apis.MarkApi;
 
 import com.example.cachestoredemo.apis.BaseApi;
 import com.example.cachestoredemo.CacheMemory;
+import com.example.cachestoredemo.entities.Point;
 import com.example.cachestoredemo.requests.MarkRequest.PointSettingRequest;
 import com.example.cachestoredemo.responses.PointRespond;
-import com.example.cachestoredemo.utils.Const;
 import com.example.cachestoredemo.utils.Util;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,13 @@ public class PointSettingApi extends BaseApi<PointSettingRequest, PointRespond> 
     protected PointRespond execute(PointSettingRequest request) {
         Map<String,Integer> points = request.getData();
         for (String key: points.keySet()) {
-            pointRedis.setPoints(Const.POINT_KEY,key, String.valueOf(points.get(key)));
+            Point point = pointRepository.findByName(key);
+            if(Util.isNull(point)){
+                pointRepository.save(new Point(key,points.get(key)));
+            }
+            else{
+                pointRepository.update(point);
+            }
             CacheMemory.update(points);
         }
         return new PointRespond("Setting successfully",points);

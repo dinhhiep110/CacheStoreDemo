@@ -2,6 +2,7 @@ package com.example.cachestoredemo.services;
 
 import com.example.cachestoredemo.dao.TeacherRedisImpl;
 import com.example.cachestoredemo.entities.Teacher;
+import com.example.cachestoredemo.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,33 +10,35 @@ import java.util.List;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
-    @Autowired
-    TeacherRedisImpl teacherRedis;
+//    @Autowired
+//    TeacherRedisImpl teacherRedis;
 
+    @Autowired
+    TeacherRepository teacherRepository;
 
     @Override
     public void addTeacher(Teacher teacher) {
-        teacherRedis.setTeacher(teacher);
+        teacherRepository.save(teacher);
     }
 
     @Override
     public void updateTeacher(Teacher teacher) {
-        teacherRedis.setTeacher(teacher);
+        teacherRepository.update(teacher);
     }
 
     @Override
     public List<Teacher> getTeachers() {
-        return teacherRedis.getTeachers();
+        return teacherRepository.findAll();
     }
 
     @Override
     public Teacher getTeacherById(String id) {
-        return teacherRedis.getTeacherById(id);
+        return teacherRepository.findById(id);
     }
 
     @Override
     public void deleteTeacher(String id) {
-        teacherRedis.deleteTeacher(id);
+        teacherRepository.delete(id);
     }
 
 

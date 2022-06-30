@@ -1,6 +1,7 @@
 package com.example.cachestoredemo.apis;
 
 import com.example.cachestoredemo.dao.PointRedisImpl;
+import com.example.cachestoredemo.repository.PointRepository;
 import com.example.cachestoredemo.requests.BaseRequest;
 import com.example.cachestoredemo.responses.BaseRespond;
 import com.example.cachestoredemo.services.StudentService;
@@ -18,7 +19,7 @@ public abstract class BaseApi <R extends BaseRequest, T extends BaseRespond>{
     protected TeacherService teacherService;
 
     @Autowired
-    protected PointRedisImpl pointRedis;
+    protected PointRepository pointRepository;
     public ResponseEntity<?> doExecute(R request){
         HttpStatus statusCode = validateRequest(request);
         if(statusCode != HttpStatus.OK){
