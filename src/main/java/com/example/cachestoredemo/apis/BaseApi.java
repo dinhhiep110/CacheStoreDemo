@@ -1,6 +1,5 @@
 package com.example.cachestoredemo.apis;
 
-import com.example.cachestoredemo.dao.PointRedisImpl;
 import com.example.cachestoredemo.repository.PointRepository;
 import com.example.cachestoredemo.requests.BaseRequest;
 import com.example.cachestoredemo.responses.BaseRespond;

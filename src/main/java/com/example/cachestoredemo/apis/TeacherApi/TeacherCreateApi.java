@@ -19,16 +19,15 @@ public class TeacherCreateApi extends BaseApi<CreateTeacherRequest, TeacherRespo
         return new TeacherRespond("Add Successfully",newTeacher);
     }
 
+    @SuppressWarnings({"deprecated"})
     @Override
     protected HttpStatus validateRequest(CreateTeacherRequest request) {
         try {
             Teacher teacher = request.getData();
-            if (Util.isNull(teacher) || Util.isNull(teacher.getName())
-            || Util.isNull(teacher.getPersonClass()) || Util.isNull(teacher.getSubject())) {
+            if (Util.isNull(teacher)) {
                 return HttpStatus.BAD_REQUEST;
             }
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
             return HttpStatus.NOT_ACCEPTABLE;
         }
